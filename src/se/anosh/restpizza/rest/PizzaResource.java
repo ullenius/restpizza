@@ -46,7 +46,6 @@ public class PizzaResource {
     public Response findPizzaById(@PathParam("pizzaNo") int id) {
         
          throw new UnsupportedOperationException("Not supported yet.");
-        
     }
     
    @GET
@@ -62,7 +61,7 @@ public class PizzaResource {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
-      /**
+    /**
      * 
      * This method returns an updated version of the object
      * @param pizza
