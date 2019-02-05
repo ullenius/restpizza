@@ -5,6 +5,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import se.anosh.restpizza.domain.Pizza;
 
 /**
@@ -22,7 +23,6 @@ public class PizzaDataAccessProductionVersion implements PizzaDataAccess {
     
     @Override
     public void add(Pizza newPizza) {
-        
         em.persist(newPizza);
     }
 
@@ -39,12 +39,20 @@ public class PizzaDataAccessProductionVersion implements PizzaDataAccess {
 
     @Override
     public List<Pizza> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Query myQuery = em.createNamedQuery("SELECT p FROM Pizza p");
+        return myQuery.getResultList();
+        
     }
 
     @Override
-    public Pizza findById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Pizza findById(int id) throws PizzaNotFoundException {
+        
+        Pizza found = em.find(Pizza.class,id);
+        if (found == null)
+            throw new PizzaNotFoundException("Pizza with " + id + " was not found");
+        
+        return found;
+        
     }
     
 }

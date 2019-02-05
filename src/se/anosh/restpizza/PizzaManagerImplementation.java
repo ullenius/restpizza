@@ -1,8 +1,10 @@
 package se.anosh.restpizza;
 
 import java.util.List;
-import java.util.Optional;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
+import se.anosh.restpizza.dataaccess.PizzaDataAccess;
+import se.anosh.restpizza.dataaccess.PizzaNotFoundException;
 import se.anosh.restpizza.domain.Pizza;
 
 /**
@@ -12,29 +14,32 @@ import se.anosh.restpizza.domain.Pizza;
 @Stateless
 public class PizzaManagerImplementation implements PizzaManagerService {
 
+    @Inject
+    private PizzaDataAccess dao;
+    
     @Override
     public void addPizza(Pizza newPizza) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        dao.add(newPizza);
     }
 
     @Override
     public void updatePizza(Pizza pizza) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        dao.update(pizza);
     }
 
     @Override
-    public void deletePizza(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void deletePizza(int id) throws PizzaNotFoundException {
+        dao.remove(id);
     }
 
     @Override
-    public Optional<Pizza> findPizza(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Pizza findPizza(int id) throws PizzaNotFoundException {
+        return dao.findById(id);
     }
 
     @Override
     public List<Pizza> listAllPizzas() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return dao.findAll();
     }
     
 }

@@ -19,8 +19,8 @@ public interface PizzaDataAccess {
     
     public void add(Pizza newPizza);
     public void update(Pizza p);
-    public void remove(int id);
+    public void remove(int id) throws PizzaNotFoundException;
     public List<Pizza> findAll();
-    public Pizza findById(int id);
+    public Pizza findById(int id) throws PizzaNotFoundException;
     
 }
