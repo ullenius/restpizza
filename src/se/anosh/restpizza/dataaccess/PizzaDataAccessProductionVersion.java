@@ -27,8 +27,16 @@ public class PizzaDataAccessProductionVersion implements PizzaDataAccess {
     }
 
     @Override
-    public void update(Pizza p) {
-        em.merge(p);
+    public void update(int id, String newName, double newPrice) throws PizzaNotFoundException {
+        
+        /**
+         * 
+         * JPA's dirty checking does the work of merging after we update
+         * the fields. Auto-magic! :)
+         */
+        Pizza updated = findById(id);
+        updated.setName(newName);
+        updated.setPrice(newPrice);
     }
 
     @Override

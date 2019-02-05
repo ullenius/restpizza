@@ -23,10 +23,11 @@ public class PizzaManagerImplementation implements PizzaManagerService {
     }
 
     @Override
-    public void updatePizza(Pizza pizza) {
-        dao.update(pizza);
+    public void updatePizza(Pizza pizza) throws PizzaNotFoundException {
+        
+        dao.update(pizza.getId(), pizza.getName(), pizza.getPrice());
     }
-
+        
     @Override
     public void deletePizza(int id) throws PizzaNotFoundException {
         dao.remove(id);

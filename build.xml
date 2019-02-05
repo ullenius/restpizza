@@ -1,73 +1,103 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- You may freely edit this file. See commented blocks below for -->
-<!-- some examples of how to customize the build. -->
-<!-- (If you delete it and reopen the project it will be recreated.) -->
-<!-- By default, only the Clean and Build commands use this build script. -->
-<!-- Commands such as Run, Debug, and Test only use this build script if -->
-<!-- the Compile on Save feature is turned off for the project. -->
-<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
-<!-- in the project's Project Properties dialog box.-->
-<project name="PizzaManagementServer" default="default" basedir=".">
-    <description>Builds, tests, and runs the project PizzaManagementServer.</description>
-    <import file="nbproject/build-impl.xml"/>
-    <!--
+<project name="JavaEE Wildfly Server Build" default="BuildAll">
+    			
+    <property name="bin" value="./bin"/>
+    <property name="lib" value="./lib"/>
+    <property name="src" value="./src"/> 
+	<property name="client-dist" value="./dist"/>
+	
+    <property name="server-dist" value="/home/maskn/appar/wildfly-8.0.0.Final/standalone/deployments"/>
+	
+<property name="server-jarfile" value="${server-dist}/PizzaManagerServer.jar"/>
+	<property name="client-jarfile" value="${client-dist}/PizzaManagerServerClasses.jar"/>
+	<property name="warfile" value="${server-dist}/PizzaManager.war"/>	 
+    
+    <path id="my.classpath">
+        <pathelement path="${java.class.path}"/>
+        <pathelement location="${bin}"/>
+        
+        <fileset dir="${lib}">
+            <include name="*.jar"/>
+        </fileset>
 
-    There exist several targets which are by default empty and which can be 
-    used for execution of your tasks. These targets are usually executed 
-    before and after some main targets. They are: 
+    </path>	 
+	
+    <target name="BuildAll"
+            depends="clean, prep, compile, serverjar,clientjar, war"
+            description="Complete rebuild.">
+        <echo message="Build complete."/>
+    </target>	
+	
+	<target name="classpath">
+		   <property name="current.classpath" refid="my.classpath"/>
+		   
+		   <echo level="info">
+		   Classpath is :
+		      ${current.classpath}
+		   </echo>
+	</target>
+    
+    <target name="clean">
+        <delete dir="${bin}"/>
+        <delete dir="${client-dist}"/>
+    </target>
+    
+    <target name="prep">        
+        <mkdir dir="${bin}"/>
+        <mkdir dir="${client-dist}"/>        
+    </target>
+            
+    <target name="compile"
+     description="Compile all Java classes"
+    	depends="prep">
+        
+        <javac srcdir="${src}" destdir="${bin}" debug="true" encoding="ISO-8859-1">
+            <classpath refid="my.classpath"/>
+        </javac>
+        
+        <echo message="Compiled."/>
+    </target>
+	
+	<target name="serverjar" depends="compile" 
+	                         description="Build Server Jar files.">
+	   
+	   <jar destfile="${server-jarfile}" basedir="${bin}" >
+	   		<metainf dir="${src}/META-INF">
+	   			<include name="beans.xml" />
+	   			<include name="persistence.xml" />
+	   		</metainf>
+	   	</jar>
+	   <echo message="Built the server jar file."/>   		  
+	</target>
+	
+	<target name="war" depends="compile" 
+	                         description="Build War file.">
+		<copy todir="${bin}">
+			<fileset dir="${src}">
+				<include name="**/persistence.xml"/>
+			</fileset>
+		</copy>
+		
+		<war destfile="${warfile}" webxml="web.xml">
+			<classes dir="${bin}">
+			</classes>
+			  	
+		    <lib dir="${lib}"/>
+				  
+		</war>   
+		
+		<echo message="Built the war file."/>   	
+	</target>
+	
+	<target name="clientjar" depends="compile" 
+	                         description="Build Client Jar files.">
+	   <delete file="${client-jarfile}"/>
 
-      -pre-init:                 called before initialization of project properties
-      -post-init:                called after initialization of project properties
-      -pre-compile:              called before javac compilation
-      -post-compile:             called after javac compilation
-      -pre-compile-single:       called before javac compilation of single file
-      -post-compile-single:      called after javac compilation of single file
-      -pre-compile-test:         called before javac compilation of JUnit tests
-      -post-compile-test:        called after javac compilation of JUnit tests
-      -pre-compile-test-single:  called before javac compilation of single JUnit test
-      -post-compile-test-single: called after javac compilation of single JUunit test
-      -pre-jar:                  called before JAR building
-      -post-jar:                 called after JAR building
-      -post-clean:               called after cleaning build products
-
-    (Targets beginning with '-' are not intended to be called on their own.)
-
-    Example of inserting an obfuscator after compilation could look like this:
-
-        <target name="-post-compile">
-            <obfuscate>
-                <fileset dir="${build.classes.dir}"/>
-            </obfuscate>
-        </target>
-
-    For list of available properties check the imported 
-    nbproject/build-impl.xml file. 
-
-
-    Another way to customize the build is by overriding existing main targets.
-    The targets of interest are: 
-
-      -init-macrodef-javac:     defines macro for javac compilation
-      -init-macrodef-junit:     defines macro for junit execution
-      -init-macrodef-debug:     defines macro for class debugging
-      -init-macrodef-java:      defines macro for class execution
-      -do-jar:                  JAR building
-      run:                      execution of project 
-      -javadoc-build:           Javadoc generation
-      test-report:              JUnit report generation
-
-    An example of overriding the target for project execution could look like this:
-
-        <target name="run" depends="PizzaManagementServer-impl.jar">
-            <exec dir="bin" executable="launcher.exe">
-                <arg file="${dist.jar}"/>
-            </exec>
-        </target>
-
-    Notice that the overridden target depends on the jar target and not only on 
-    the compile target as the regular run target does. Again, for a list of available 
-    properties which you can use, check the target you are overriding in the
-    nbproject/build-impl.xml file. 
-
-    -->
+	   <jar destfile="${client-jarfile}" basedir="${bin}" 
+	   	  includes = "se/anosh/restpizza/domain/**,**/*">
+	   	
+	   	</jar>
+		  		  
+		<echo message="Built the client jar file."/>   		
+	</target>
+	
 </project>

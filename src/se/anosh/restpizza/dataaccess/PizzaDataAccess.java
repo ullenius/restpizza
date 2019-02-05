@@ -18,7 +18,7 @@ import se.anosh.restpizza.domain.Pizza;
 public interface PizzaDataAccess {
     
     public void add(Pizza newPizza);
-    public void update(Pizza p);
+    public void update(int id, String name, double price) throws PizzaNotFoundException;
     public void remove(int id) throws PizzaNotFoundException;
     public List<Pizza> findAll();
     public Pizza findById(int id) throws PizzaNotFoundException;

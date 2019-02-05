@@ -21,6 +21,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import se.anosh.restpizza.PizzaManagerServiceLocal;
+import se.anosh.restpizza.dataaccess.PizzaNotFoundException;
 import se.anosh.restpizza.domain.Pizza;
 
 /**
@@ -37,7 +38,17 @@ public class PizzaResource {
     @POST
     @Consumes({"application/JSON", "application/XML"})
     public Response createPizza(Pizza pizza) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
+        if (pizza == null)
+            return Response.status(400).build(); // 400 - bad request
+        
+        try {
+        service.addPizza(pizza);
+        } catch (Exception e) {
+            return Response.status(504).build();
+        }
+        // 204: No content. The server has successfully fulfilled the request
+        return Response.status(204).build();
     }
     
     @GET
@@ -45,25 +56,48 @@ public class PizzaResource {
     @Path("{pizzaNo}")
     public Response findPizzaById(@PathParam("pizzaNo") int id) {
         
-         throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            Pizza found = service.findPizza(id);
+            return Response.ok(found).build();
+        } catch (PizzaNotFoundException ex) {
+            return Response.status(404).build(); // not found
+        }
+        
     }
     
    @GET
     @Produces({"application/JSON", "application/XML"})
     public Response getAllPizzas() {
         
-     throw new UnsupportedOperationException("Not supported yet.");
+        return Response.ok(service.listAllPizzas()).build();
     }
+    
     
     @DELETE
     @Path("{pizzaNo}")
-    public Response deletePizza() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Response deletePizza(@PathParam("employeeNo")int id) {
+        
+        
+        /**
+         * 
+         * The dao-implementation code for remove() calls the findById-method
+         * (in the same class). That is why PizzaNotFoundException might be thrown.
+         * 
+         * Please refer to PizzaDataAccessProductionVersion.java
+         * 
+         */
+        try {
+            service.deletePizza(id);
+            return Response.status(204).build();
+        } catch (PizzaNotFoundException ex) {
+            return Response.status(404).build();
+        }
+        
     }
     
     /**
      * 
-     * This method returns an updated version of the object
+     * This method returns an updated version of the Pizza object
      * @param pizza
      * @return 
      */
@@ -71,7 +105,18 @@ public class PizzaResource {
     @Produces({"application/JSON", "application/XML"})
     @Consumes({"application/JSON", "application/XML"})
     public Response updatePizza(Pizza pizza) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
+        if (pizza == null)
+            return Response.status(400).build(); // 400 - bad request
+        
+        try {
+            service.updatePizza(pizza); // throws PizzaNotFoundException
+            return Response.ok(service.findPizza(pizza.getId())).build();
+            
+        } catch (PizzaNotFoundException ex) {
+            return Response.status(404).build(); // not found
+        }
+        
     }
         
         
