@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @XmlRootElement
-public class Pizza {
+public class Pizza implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
