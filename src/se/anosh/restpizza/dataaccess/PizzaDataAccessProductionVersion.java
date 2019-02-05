@@ -46,13 +46,11 @@ public class PizzaDataAccessProductionVersion implements PizzaDataAccess {
 
     @Override
     public Pizza findById(int id) throws PizzaNotFoundException {
-        
         Pizza found = em.find(Pizza.class,id);
         if (found == null)
             throw new PizzaNotFoundException("Pizza with " + id + " was not found");
         
         return found;
-        
     }
     
 }
