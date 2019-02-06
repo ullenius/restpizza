@@ -1,11 +1,11 @@
-/**
- * 
- * REST webservice implementation code
- * 
- * CRUD-functionality
- * 
- * 
- */
+ /**
+  *
+  * REST webservice implementation code
+  *
+  * CRUD-functionality
+  *
+  *
+  */
 
 package se.anosh.restpizza.rest;
 
@@ -33,17 +33,17 @@ import se.anosh.restpizza.domain.Pizza;
 public class PizzaResource {
     
     @Inject
-    PizzaManagerServiceLocal service;
+            PizzaManagerServiceLocal service;
     
     @POST
-    @Consumes({"application/JSON", "application/XML"})
+    @Consumes({"application/JSON"})
     public Response createPizza(Pizza pizza) {
         
         if (pizza == null)
             return Response.status(400).build(); // 400 - bad request
         
         try {
-        service.addPizza(pizza);
+            service.addPizza(pizza);
         } catch (Exception e) {
             return Response.status(504).build();
         }
@@ -52,7 +52,7 @@ public class PizzaResource {
     }
     
     @GET
-    @Produces({"application/JSON", "application/XML"})
+    @Produces({"application/JSON"})
     @Path("{pizzaNo}")
     public Response findPizzaById(@PathParam("pizzaNo") int id) {
         
@@ -65,8 +65,8 @@ public class PizzaResource {
         
     }
     
-   @GET
-    @Produces({"application/JSON", "application/XML"})
+    @GET
+    @Produces({"application/JSON"})
     public Response getAllPizzas() {
         
         return Response.ok(service.listAllPizzas()).build();
@@ -79,12 +79,12 @@ public class PizzaResource {
         
         
         /**
-         * 
+         *
          * The dao-implementation code for remove() calls the findById-method
          * (in the same class). That is why PizzaNotFoundException might be thrown.
-         * 
+         *
          * Please refer to PizzaDataAccessProductionVersion.java
-         * 
+         *
          */
         try {
             service.deletePizza(id);
@@ -96,14 +96,14 @@ public class PizzaResource {
     }
     
     /**
-     * 
+     *
      * This method returns an updated version of the Pizza object
      * @param pizza
-     * @return 
+     * @return
      */
     @PUT
-    @Produces({"application/JSON", "application/XML"})
-    @Consumes({"application/JSON", "application/XML"})
+    @Produces({"application/JSON"})
+    @Consumes({"application/JSON"})
     public Response updatePizza(Pizza pizza) {
         
         if (pizza == null)
@@ -118,7 +118,7 @@ public class PizzaResource {
         }
         
     }
-        
-        
-        
+    
+    
+    
 }
