@@ -16,10 +16,8 @@ import se.anosh.restpizza.domain.Pizza;
 @Default
 public class PizzaDataAccessProductionVersion implements PizzaDataAccess {
 
-
     @PersistenceContext
     private EntityManager em;
-    
     
     @Override
     public void add(Pizza newPizza) {

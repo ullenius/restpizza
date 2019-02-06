@@ -23,6 +23,11 @@ public class Pizza implements Serializable {
     private String name;
     private Double price;
 
+    
+    public Pizza() {
+        // required by JPA!
+    }
+    
     public int getId() {
         return id;
     }
