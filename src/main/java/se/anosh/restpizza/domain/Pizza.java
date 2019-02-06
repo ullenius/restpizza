@@ -27,6 +27,11 @@ public class Pizza implements Serializable {
     public Pizza() {
         // required by JPA!
     }
+
+    public Pizza(String name, Double price) {
+        this.name = name;
+        this.price = price;
+    }
     
     public int getId() {
         return id;

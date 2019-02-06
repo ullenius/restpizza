@@ -45,7 +45,7 @@ public class PizzaDataAccessProductionVersion implements PizzaDataAccess {
 
     @Override
     public List<Pizza> findAll() {
-        Query myQuery = em.createNamedQuery("SELECT p FROM Pizza p");
+        Query myQuery = em.createQuery("SELECT p FROM Pizza p");
         return myQuery.getResultList();
         
     }
