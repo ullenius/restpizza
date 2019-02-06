@@ -12,7 +12,7 @@ import se.anosh.restpizza.domain.Pizza;
  * @author Anosh D. Ullenius <anosh@anosh.se>
  */
 @Stateless
-public class PizzaManagerImplementation implements PizzaManagerService {
+public class PizzaManagerImplementation implements PizzaManagerService, PizzaManagerServiceLocal {
 
     @Inject
     private PizzaDataAccess dao;
