@@ -75,7 +75,7 @@ public class PizzaResource {
     
     @DELETE
     @Path("{pizzaNo}")
-    public Response deletePizza(@PathParam("employeeNo")int id) {
+    public Response deletePizza(@PathParam("pizzaNo")int id) {
         
         
         /**
