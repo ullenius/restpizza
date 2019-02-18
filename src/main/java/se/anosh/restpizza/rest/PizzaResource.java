@@ -32,6 +32,12 @@ import se.anosh.restpizza.domain.Pizza;
 @Path("/pizza")
 public class PizzaResource {
     
+    // HTTP status codes
+    private static final int NO_CONTENT = 204;
+    private static final int BAD_REQUEST = 400;
+    private static final int NOT_FOUND = 404;
+    private static final int GATEWAY_TIMEOUT = 504;
+    
     @Inject
             PizzaManagerServiceLocal service;
     
@@ -40,15 +46,14 @@ public class PizzaResource {
     public Response createPizza(Pizza pizza) {
         
         if (pizza == null)
-            return Response.status(400).build(); // 400 - bad request
+            return Response.status(BAD_REQUEST).build();
         
         try {
             service.addPizza(pizza);
         } catch (Exception e) {
-            return Response.status(504).build();
+            return Response.status(GATEWAY_TIMEOUT).build();
         }
-        // 204: No content. The server has successfully fulfilled the request
-        return Response.status(204).build();
+        return Response.status(NO_CONTENT).build();
     }
     
     @GET
@@ -60,7 +65,7 @@ public class PizzaResource {
             Pizza found = service.findPizza(id);
             return Response.ok(found).build();
         } catch (PizzaNotFoundException ex) {
-            return Response.status(404).build(); // not found
+            return Response.status(NOT_FOUND).build(); // not found
         }
         
     }
@@ -77,7 +82,6 @@ public class PizzaResource {
     @Path("{pizzaNo}")
     public Response deletePizza(@PathParam("pizzaNo")int id) {
         
-        
         /**
          *
          * The dao-implementation code for remove() calls the findById-method
@@ -88,9 +92,9 @@ public class PizzaResource {
          */
         try {
             service.deletePizza(id);
-            return Response.status(204).build();
+            return Response.status(NO_CONTENT).build();
         } catch (PizzaNotFoundException ex) {
-            return Response.status(404).build();
+            return Response.status(NOT_FOUND).build();
         }
         
     }
@@ -107,14 +111,14 @@ public class PizzaResource {
     public Response updatePizza(Pizza pizza) {
         
         if (pizza == null)
-            return Response.status(400).build(); // 400 - bad request
+            return Response.status(BAD_REQUEST).build();
         
         try {
             service.updatePizza(pizza); // throws PizzaNotFoundException
             return Response.ok(service.findPizza(pizza.getId())).build();
             
         } catch (PizzaNotFoundException ex) {
-            return Response.status(404).build(); // not found
+            return Response.status(NOT_FOUND).build();
         }
         
     }
