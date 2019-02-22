@@ -1,5 +1,5 @@
-# restpizza
-RestPizza - super simple REST-webservice with CRUD-functionality. School assignment
+# restpizza 
+RestPizza:pizza: - super simple REST-webservice with CRUD-functionality. School assignment
 
 ## Features
 Complete CRUD-functionality, POST, PUT, GET, DELETE. Returns suitable HTTP-response codes.
@@ -12,6 +12,6 @@ Complete CRUD-functionality, POST, PUT, GET, DELETE. Returns suitable HTTP-respo
 ## Building
 This is a maven-project. 
 
-Build the war-file using ```maven package```
+Build the war-file using ```mvn package```
 
 This project was meant for a stand-alone application server. Tested and working with Wildfly
