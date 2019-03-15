@@ -15,3 +15,7 @@ This is a maven-project.
 Build the war-file using ```mvn package```
 
 This project was meant for a stand-alone application server. Tested and working with Wildfly
+
+## Flow chart
+Simple flow chart describing the project.
+![Flowchart](restpizza.svg)
